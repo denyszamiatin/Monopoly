@@ -20,3 +20,9 @@ while True:
         print(f'Great, {amount_of_players} it is!')
         break
 
+player_names_list=[]
+
+for i in range(amount_of_players):
+    player_names_list.append(input(f'Please tell me the name Player {i+1}:'))
+
+print('Names saved!')
