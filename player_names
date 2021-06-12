@@ -1,6 +1,0 @@
-def p_names(quantity):
-    names = []
-    for i in range(quantity):
-        names.append(input('What is your name? '))
-    return names
-players = p_names() # argument is the variable from issue #1
