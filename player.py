@@ -6,3 +6,12 @@ class Player:
         self.name = name
         self.money = settings.START_MONEY
         self.field = 'GO'
+
+    @property
+    def all_money(self):
+        """Sum all banknotes in player own and return it as integer."""
+        money_sum = 0
+        for i, j in self.money.items():
+            money_sum += int(i) * j
+        return money_sum
+

@@ -2,6 +2,7 @@ import settings
 import player
 import random
 
+
 def throw_dice(quantity=1):
     """
     Randomize dice throw.
@@ -38,7 +39,7 @@ def get_first_player(players):
             winners[players[v]] = players[v].name
 
         if len(winners)>1:
-            print(f"It's a tie for {list(winners.values()), they rolled {max_value}}")
+            print(f"It's a tie for {list(winners.values())}, they rolled {max_value}")
             get_first_player(list(winners.keys()))
         else:
             print(f'{list(winners.values())[0]} got {max_value} and goes first!')
@@ -76,5 +77,6 @@ if __name__ == '__main__':
     players_qty = input_players_qty()
     players = input_player_names(players_qty)
     get_first_player(players)
-
-
+    print('Players now have gold:')
+    for player in players:
+        print(f'{player.name} has {player.all_money} as {player.money}')
