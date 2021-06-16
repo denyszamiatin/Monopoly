@@ -1,6 +1,17 @@
 import settings
 import player
+from random import randint
 
+def throw_dice(quantity=1):
+    """
+    Randomize dice throw.
+    :param quantity: Quantity of dices thrown - integer.
+    :return: Values from 1 to 6, quantity times as a list of integers.
+    """
+    if not isinstance(quantity, int) or quantity<1:
+        raise ValueError('Need int >1 for this function')
+    else:
+        return [randint(1, 6) for _ in range(quantity)]
 
 def input_players_qty():
     """
