@@ -17,4 +17,4 @@ class Player:
 
 
     def __str__(self):
-        return f'player: {self.name}, with balance: {self.money} on field: {self.field}'
+        return f'player: {self.name}, with balance: {self.all_money} on field: {self.field}'
