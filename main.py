@@ -22,7 +22,7 @@ def get_first_player(players):
     """
     Throws dices and prints who has the biggest value, if tie - called once again.
     :param players: List of players - list of objects.
-    #TODO define if this function needs to return something, if yes - what? example: first player object adress, player index in list, player's name, etc
+    #TODO define if this function needs to return something, if yes - what? example: first player object address, player index in list, player's name, etc
     """
     if all(isinstance(x, player.Player) for x in players):
 
@@ -38,7 +38,7 @@ def get_first_player(players):
             winners[players[v]] = players[v].name
 
         if len(winners)>1:
-            print(f"It's a tie for {list(winners.values()), they rolled {max_value}}")
+            print(f"It's a tie for {list(winners.values())}, they rolled {max_value}")
             get_first_player(list(winners.keys()))
         else:
             print(f'{list(winners.values())[0]} got {max_value} and goes first!')
