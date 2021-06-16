@@ -23,7 +23,7 @@ def get_first_player(players):
     """
     Throws dices and prints who has the biggest value, if tie - called once again.
     :param players: List of players - list of objects.
-    #TODO define if this function needs to return something, if yes - what? example: first player object adress, player index in list, player's name, etc
+    #TODO define if this function needs to return something, if yes - what? example: first player object address, player index in list, player's name, etc
     """
     if all(isinstance(x, player.Player) for x in players):
 
