@@ -1,6 +1,6 @@
 import settings
 import player
-from random import randint
+import random
 
 def throw_dice(quantity=1):
     """
@@ -11,7 +11,41 @@ def throw_dice(quantity=1):
     if not isinstance(quantity, int) or quantity<1:
         raise ValueError('Need int >1 for this function')
     else:
-        return [randint(1, 6) for _ in range(quantity)]
+        return [random.randint(settings.DICE_MIN, settings.DICE_MAX) for _ in range(quantity)]
+
+
+def get_dice_sums(dices):
+    return [sum(i) for i in dices]
+
+
+def get_first_player(players):
+    """
+    Throws dices and prints who has the biggest value, if tie - called once again.
+    :param players: List of players - list of objects.
+    #TODO define if this function needs to return something, if yes - what? example: first player object adress, player index in list, player's name, etc
+    """
+    if all(isinstance(x, player.Player) for x in players):
+
+        print('Rolling the dices!')
+        first_dices = [throw_dice(2) for _ in range(len(players))]
+        [print(f'{players[x].name} rolled {first_dices[x]}') for x in range(len(players))]
+        dice_sums = get_dice_sums(first_dices)
+        max_value = max(dice_sums)
+        winner_values = [i for i, j in enumerate(dice_sums) if j == max_value]
+
+        winners = {}
+        for i,v in enumerate(winner_values):
+            winners[players[v]] = players[v].name
+
+        if len(winners)>1:
+            print(f"It's a tie for {list(winners.values()), they rolled {max_value}}")
+            get_first_player(list(winners.keys()))
+        else:
+            print(f'{list(winners.values())[0]} got {max_value} and goes first!')
+            #return
+    else:
+        raise TypeError('Input must be a list of Player class objects')
+
 
 def input_players_qty():
     """
@@ -41,4 +75,6 @@ def input_player_names(quantity):
 if __name__ == '__main__':
     players_qty = input_players_qty()
     players = input_player_names(players_qty)
+    get_first_player(players)
+
 
