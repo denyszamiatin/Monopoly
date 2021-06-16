@@ -2,7 +2,8 @@ import settings
 import player
 import random
 
-def throw_dice(quantity=1):
+
+def throw_dice(quantity: int=1) ->list[int]:
     """
     Randomize dice throw.
     :param quantity: Quantity of dices thrown - integer.
@@ -18,7 +19,7 @@ def get_dice_sums(dices):
     return [sum(i) for i in dices]
 
 
-def get_first_player(players):
+def get_first_player(players: list[player.Player]):
     """
     Throws dices and prints who has the biggest value, if tie - called once again.
     :param players: List of players - list of objects.
@@ -47,7 +48,7 @@ def get_first_player(players):
         raise TypeError('Input must be a list of Player class objects')
 
 
-def input_players_qty():
+def input_players_qty() -> int:
     """
     Ask players quantity from user. Allowed from MIN_PLAYERS_NUMBER to MAX_PLAYERS_NUMBER from settings.
     :return: Quantity of players as integer.
@@ -62,7 +63,7 @@ def input_players_qty():
         print('Wrong q-ty!')
 
 
-def input_player_names(quantity):
+def input_player_names(quantity: int) -> list[player.Player]:
     """
     Ask players names and create objects of class Player for each of them.
     :param quantity: Quantity of players for particular game - integer.
