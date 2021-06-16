@@ -77,5 +77,6 @@ if __name__ == '__main__':
     players_qty = input_players_qty()
     players = input_player_names(players_qty)
     get_first_player(players)
-
-
+    print('Players now have gold:')
+    for player in players:
+        print(f'{player.name} has {player.all_money} as {player.money}')
