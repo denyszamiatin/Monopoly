@@ -5,7 +5,7 @@ class Player:
     def __init__(self, name):
         self.name = name
         self.money = settings.START_MONEY
-        self.field = 'GO'
+        self.field = 0
 
     @property
     def all_money(self):

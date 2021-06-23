@@ -73,6 +73,20 @@ def input_player_names(quantity: int) -> list[player.Player]:
     return player_list
 
 
+def find_position(name):
+    """
+    Asks player name and changes his position.
+    :param name: Player`s name.
+    :return: Player`s new position after a dice roll.
+    #TODO implement order of players
+    """
+    name.field += sum(throw_dice())
+    if name.field > 40:
+        name.field = abs(40 - name.field)
+    print(name)
+    return name.field
+
+
 if __name__ == '__main__':
     players_qty = input_players_qty()
     players = input_player_names(players_qty)
@@ -80,3 +94,5 @@ if __name__ == '__main__':
     print('Players now have gold:')
     for player in players:
         print(f'{player.name} has {player.all_money} as {player.money}')
+    order = 0
+    find_position(players[order])
