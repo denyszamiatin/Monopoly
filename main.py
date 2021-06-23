@@ -9,10 +9,18 @@ def throw_dice(quantity: int=1) ->list[int]:
     :param quantity: Quantity of dices thrown - integer.
     :return: Values from 1 to 6, quantity times as a list of integers.
     """
-    if not isinstance(quantity, int) or quantity<1:
-        raise ValueError('Need int >1 for this function')
-    else:
-        return [random.randint(settings.DICE_MIN, settings.DICE_MAX) for _ in range(quantity)]
+    count = 0
+    while True:
+        if count < 3:
+            rand_list = [random.randint(settings.DICE_MIN, settings.DICE_MAX) for _ in range(quantity)]
+            if len(rand_list) == len(set(rand_list)):
+                return rand_list
+            else:
+                count += 1
+                return rand_list
+        else:
+            """ TODO: create field jail and using function move, put player into jail."""
+            pass
 
 
 def get_dice_sums(dices):
