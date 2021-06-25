@@ -15,13 +15,12 @@ class Player:
             money_sum += int(i) * j
         return money_sum
 
-    def throw_dice(self, quantity=2):
+    def throw_dice(self):
         """
         Throw the dice.
-        :param quantity: Quantity of dice. Usually - 2.
         :return: List of integers from 1 to 6 as a result of dice roll.
         """
-        return [random.randint(settings.DICE_MIN, settings.DICE_MAX) for _ in range(quantity)]
+        return [random.randint(settings.DICE_MIN, settings.DICE_MAX) for _ in range(settings.DICE_AMOUNT)]
 
     def move(self):
         """Move player on the field, according to his DICE roll."""

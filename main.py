@@ -1,18 +1,18 @@
 import settings
 import player
 import random
+from collections import deque
 
 
-def throw_dice(quantity: int=1) ->list[int]:
+def throw_dice() ->list[int]:
     """
     Randomize dice throw.
-    :param quantity: Quantity of dices thrown - integer.
     :return: Values from 1 to 6, quantity times as a list of integers.
     """
     count = 0
     while True:
         if count < 3:
-            rand_list = [random.randint(settings.DICE_MIN, settings.DICE_MAX) for _ in range(quantity)]
+            rand_list = [random.randint(settings.DICE_MIN, settings.DICE_MAX) for _ in range(settings.DICE_AMOUNT)]
             if len(rand_list) == len(set(rand_list)):
                 return rand_list
             else:
@@ -29,16 +29,16 @@ def get_dice_sums(dices):
 
 def get_first_player(players: list[player.Player]):
     """
-    Throws dices and prints who has the biggest value, if tie - called once again.
+    Throws dices and returns adress of the Player object who has the biggest value, if tie - called again.
     :param players: List of players - list of objects.
-    #TODO define if this function needs to return something, if yes - what? example: first player object address, player index in list, player's name, etc
+    :return: Adress of Player object.
     """
     if all(isinstance(x, player.Player) for x in players):
-
         print('Rolling the dices!')
-        first_dices = [throw_dice(2) for _ in range(len(players))]
+        first_dices = [throw_dice() for _ in range(len(players))]
         [print(f'{players[x].name} rolled {first_dices[x]}') for x in range(len(players))]
         dice_sums = get_dice_sums(first_dices)
+
         max_value = max(dice_sums)
         winner_values = [i for i, j in enumerate(dice_sums) if j == max_value]
 
@@ -48,12 +48,26 @@ def get_first_player(players: list[player.Player]):
 
         if len(winners)>1:
             print(f"It's a tie for {list(winners.values())}, they rolled {max_value}")
-            get_first_player(list(winners.keys()))
+            return get_first_player(list(winners.keys()))
         else:
             print(f'{list(winners.values())[0]} got {max_value} and goes first!')
-            #return
+            return (list(winners.keys())[0])
     else:
         raise TypeError('Input must be a list of Player class objects')
+
+
+def sort_player_list(players: list[player.Player],first_player: player.Player):
+    """
+    Sorts player list so first player is first in the list.
+    :param players: List of players - list of objects.
+    :param first_player: Player object.
+    :return: Adress of Player object.
+    """
+    index = players.index(first_player)
+    items = deque(players)
+    items.rotate(-index)
+    print(f'Player order is : {[item.name for item in items]}')
+    return items
 
 
 def input_players_qty() -> int:
@@ -98,7 +112,8 @@ def find_position(name):
 if __name__ == '__main__':
     players_qty = input_players_qty()
     players = input_player_names(players_qty)
-    get_first_player(players)
+    first_player = get_first_player(players)
+    players = sort_player_list(players,first_player)
     print('Players now have gold:')
     for player in players:
         print(f'{player.name} has {player.all_money} as {player.money}')
