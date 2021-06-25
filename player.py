@@ -1,5 +1,5 @@
 import settings
-import random
+import utils
 
 class Player:
     def __init__(self, name):
@@ -15,16 +15,9 @@ class Player:
             money_sum += int(i) * j
         return money_sum
 
-    def throw_dice(self):
-        """
-        Throw the dice.
-        :return: List of integers from 1 to 6 as a result of dice roll.
-        """
-        return [random.randint(settings.DICE_MIN, settings.DICE_MAX) for _ in range(settings.DICE_AMOUNT)]
-
     def move(self):
         """Move player on the field, according to his DICE roll."""
-        self.field += self.throw_dice()
+        self.field += utils.throw_dice()
         if self.field > 40:
             self.field -= 40
 

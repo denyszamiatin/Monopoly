@@ -1,30 +1,7 @@
 import settings
 import player
-import random
-from collections import deque
-
-
-def throw_dice() ->list[int]:
-    """
-    Randomize dice throw.
-    :return: Values from 1 to 6, quantity times as a list of integers.
-    """
-    count = 0
-    while True:
-        if count < 3:
-            rand_list = [random.randint(settings.DICE_MIN, settings.DICE_MAX) for _ in range(settings.DICE_AMOUNT)]
-            if len(rand_list) == len(set(rand_list)):
-                return rand_list
-            else:
-                count += 1
-                return rand_list
-        else:
-            """ TODO: create field jail and using function move, put player into jail."""
-            pass
-
-
-def get_dice_sums(dices):
-    return [sum(i) for i in dices]
+import utils
+import collections
 
 
 def get_first_player(players: list[player.Player]):
@@ -35,9 +12,9 @@ def get_first_player(players: list[player.Player]):
     """
     if all(isinstance(x, player.Player) for x in players):
         print('Rolling the dices!')
-        first_dices = [throw_dice() for _ in range(len(players))]
+        first_dices = [utils.throw_dice() for _ in range(len(players))]
         [print(f'{players[x].name} rolled {first_dices[x]}') for x in range(len(players))]
-        dice_sums = get_dice_sums(first_dices)
+        dice_sums = [sum(i) for i in first_dices]
 
         max_value = max(dice_sums)
         winner_values = [i for i, j in enumerate(dice_sums) if j == max_value]
@@ -64,7 +41,7 @@ def sort_player_list(players: list[player.Player],first_player: player.Player):
     :return: Adress of Player object.
     """
     index = players.index(first_player)
-    items = deque(players)
+    items = collections.deque(players)
     items.rotate(-index)
     print(f'Player order is : {[item.name for item in items]}')
     return items
@@ -101,8 +78,9 @@ def find_position(name):
     :param name: Player`s name.
     :return: Player`s new position after a dice roll.
     #TODO implement order of players
+    # Done in a form of list of players - I.
     """
-    name.field += sum(throw_dice())
+    name.field += sum(utils.validate_dice_throw())
     if name.field > 40:
         name.field = abs(40 - name.field)
     print(name)
