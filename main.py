@@ -1,7 +1,6 @@
 import settings
 import player
 import utils
-import collections
 
 
 def get_first_player(players: list[player.Player]):
