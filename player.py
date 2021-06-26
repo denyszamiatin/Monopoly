@@ -1,11 +1,12 @@
 import settings
 import utils
 
+
 class Player:
     def __init__(self, name):
         self.name = name
         self.money = settings.START_MONEY
-        self.field = 1
+        self.field = settings.START_FIELD
 
     @property
     def all_money(self):
@@ -15,11 +16,9 @@ class Player:
             money_sum += int(i) * j
         return money_sum
 
-    def move(self):
+    def move(self, dices):
         """Move player on the field, according to his DICE roll."""
-        self.field += utils.throw_dice()
-        if self.field > 40:
-            self.field -= 40
+        self.field = (self.field + dices) % settings.FIELDS_NUMBER
 
     def __str__(self):
         return f'player: {self.name}, with balance: {self.all_money} on field: {self.field}'

@@ -10,30 +10,22 @@ def get_first_player(players: list[player.Player]):
     :param players: List of players - list of objects.
     :return: Address of Player object.
     """
-    if all(isinstance(x, player.Player) for x in players):
+    assert all(isinstance(x, player.Player) for x in players)
+    winners = players.copy()
+    while True:
         print('Rolling the dices!')
-        first_dices = [utils.throw_dice() for _ in range(len(players))]
-        [print(f'{players[x].name} rolled {first_dices[x]}') for x in range(len(players))]
-        dice_sums = [sum(i) for i in first_dices]
+        first_dices = [utils.throw_dice() for _ in winners]
+        for i, winner in enumerate(winners):
+            print(f'{winner.name} rolled {first_dices[i]}')
+        scores = [sum(i) for i in first_dices]
+        max_score = max(scores)
+        winners = [winner for i, winner in enumerate(winners) if scores[i] == max_score]
 
-        max_value = max(dice_sums)
-        winner_values = [i for i, j in enumerate(dice_sums) if j == max_value]
-
-        winners = {}
-        for i,v in enumerate(winner_values):
-            winners[players[v]] = players[v].name
-
-        if len(winners)>1:
-            print(f"It's a tie for {list(winners.values())}, they rolled {max_value}")
-            return get_first_player(list(winners.keys()))
-        else:
-            print(f'{list(winners.values())[0]} got {max_value} and goes first!')
-            return (list(winners.keys())[0])
-    else:
-        raise TypeError('Input must be a list of Player class objects')
+        if len(winners) == 1:
+            return winners[0]
 
 
-def sort_player_list(players: list[player.Player],first_player: player.Player):
+def sort_players(players: list[player.Player], first_player: player.Player):
     """
     Sorts player list so first player is first in the list.
     :param players: List of players - list of objects.
@@ -41,10 +33,9 @@ def sort_player_list(players: list[player.Player],first_player: player.Player):
     :return: Sorted list of Player objects.
     """
     index = players.index(first_player)
-    items = collections.deque(players)
-    items.rotate(-index)
-    print(f'Player order is : {[item.name for item in items]}')
-    return list(items)
+    ordered_players = players[index:] + players[:index]
+    print(f'Player order is : {",".join(item.name for item in ordered_players)}')
+    return ordered_players
 
 
 def input_players_qty() -> int:
@@ -68,32 +59,15 @@ def input_player_names(quantity: int) -> list[player.Player]:
     :param quantity: Quantity of players for particular game - integer.
     :return: List of players.
     """
-    player_list = [player.Player(input('What is your name? ')) for _ in range(quantity)]
-    return player_list
-
-
-def find_position(name):
-    """
-    Asks player name and changes his position.
-    :param name: Player`s name.
-    :return: Player`s new position after a dice roll.
-    #TODO implement order of players
-    # Done in a form of list of players - I.
-    """
-    name.field += sum(utils.validate_dice_throw())
-    if name.field > 40:
-        name.field = abs(40 - name.field)
-    print(name)
-    return name.field
+    return [player.Player(input('What is your name? ')) for _ in range(quantity)]
 
 
 if __name__ == '__main__':
     players_qty = input_players_qty()
     players = input_player_names(players_qty)
     first_player = get_first_player(players)
-    players = sort_player_list(players,first_player)
+    players = sort_players(players,first_player)
     print('Players now have gold:')
     for player in players:
         print(f'{player.name} has {player.all_money} as {player.money}')
     order = 0
-    find_position(players[order])

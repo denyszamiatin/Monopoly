@@ -4,3 +4,5 @@ DICE_MIN = 1
 DICE_MAX = 6
 DICE_AMOUNT = 2
 START_MONEY = {'500': 2, '100': 2, '50': 2, '20': 6, '10': 5, '5': 5, '1': 5}
+FIELDS_NUMBER = 40
+START_FIELD = 1
