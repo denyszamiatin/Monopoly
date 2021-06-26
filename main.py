@@ -44,7 +44,7 @@ def sort_player_list(players: list[player.Player],first_player: player.Player):
     items = collections.deque(players)
     items.rotate(-index)
     print(f'Player order is : {[item.name for item in items]}')
-    return items
+    return list(items)
 
 
 def input_players_qty() -> int:
