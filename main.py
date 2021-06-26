@@ -6,9 +6,9 @@ import collections
 
 def get_first_player(players: list[player.Player]):
     """
-    Throws dices and returns adress of the Player object who has the biggest value, if tie - called again.
+    Throws dices and returns address of the Player object who has the biggest value, if tie - called again.
     :param players: List of players - list of objects.
-    :return: Adress of Player object.
+    :return: Address of Player object.
     """
     if all(isinstance(x, player.Player) for x in players):
         print('Rolling the dices!')
@@ -38,7 +38,7 @@ def sort_player_list(players: list[player.Player],first_player: player.Player):
     Sorts player list so first player is first in the list.
     :param players: List of players - list of objects.
     :param first_player: Player object.
-    :return: Adress of Player object.
+    :return: Sorted list of Player objects.
     """
     index = players.index(first_player)
     items = collections.deque(players)
