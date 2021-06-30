@@ -1,6 +1,7 @@
 import settings
 import player
 import utils
+import bank
 
 
 def get_first_player(players: list[player.Player]):
@@ -68,5 +69,6 @@ if __name__ == '__main__':
     players = sort_players(players,first_player)
     print('Players now have gold:')
     for player in players:
-        print(f'{player.name} has {player.all_money} as {player.money}')
+        player.balance = bank.Bank.get_start_money()
+        print(f'{player.name} has {player.balance}')
     order = 0

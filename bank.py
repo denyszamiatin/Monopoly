@@ -1,3 +1,12 @@
+import money
+
 class Bank:
-    def get_money(self, amount: int) -> int:
-        return amount
+    @staticmethod
+    def get_start_money():
+        value = money.Money(five_hundred=2, one_hundred=2, fifty=2, twenty=6, ten=5, five=5, one=5)
+        return value
+
+    @staticmethod
+    def get_salary():
+        value = money.Money(one_hundred=2)
+        return value
