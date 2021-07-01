@@ -2,26 +2,32 @@ import pytest
 
 import main
 import player
+import board
 
 
 @pytest.fixture(scope='module')
-def A():
-    return player.Player('A')
+def playing_board():
+    return board.Board()
 
 
 @pytest.fixture(scope='module')
-def B():
-    return player.Player('B')
+def A(playing_board):
+    return player.Player('A', playing_board)
 
 
 @pytest.fixture(scope='module')
-def C():
-    return player.Player('C')
+def B(playing_board):
+    return player.Player('B', playing_board)
 
 
 @pytest.fixture(scope='module')
-def D():
-    return player.Player('D')
+def C(playing_board):
+    return player.Player('C', playing_board)
+
+
+@pytest.fixture(scope='module')
+def D(playing_board):
+    return player.Player('D', playing_board)
 
 
 def test_sort_players(A, B, C, D):
