@@ -25,7 +25,6 @@ class Money:
     def __add__(self, other):
         if not isinstance(other, Money):
             raise TypeError(f'Type "Money" is expected, got {type(other)} instead!')
-        other: Money
 
         self.five_hundred += other.five_hundred
         self.one_hundred += other.one_hundred
@@ -39,66 +38,45 @@ class Money:
         if not isinstance(other, Money):
             raise TypeError(f'Type "Money" is expected, got {type(other)} instead!')
 
-        other: Money
         if self.total < other.total:
             raise ValueError('Balance becomes negative!')
 
-        five_hundred, one_hundred, fifty, twenty, ten, five, one = 0,0,0,0,0,0,0
         diff = self.total - other.total
-        if diff/500 > 1:
-            five_hundred = math.floor(diff/500)
-            diff -= five_hundred * 500
-        if diff/100 > 1:
-            one_hundred = math.floor(diff/100)
-            diff -= one_hundred * 100
-        if diff/50 > 1:
-            fifty = math.floor(diff/50)
-            diff -= fifty * 50
-        if diff/20 > 1:
-            twenty = math.floor(diff/20)
-            diff -= twenty * 20
-        if diff/10 > 1:
-            ten = math.floor(diff/10)
-            diff -= ten * 10
-        if diff/5 > 1:
-            five = math.floor(diff/5)
-            diff -= five * 5
+        if diff//500:
+            self.five_hundred = diff//500
+            diff %= 500
+        if diff//100:
+            self.one_hundred = diff//100
+            diff %= 100
+        if diff//50:
+            self.fifty = diff//50
+            diff %= 50
+        if diff//20:
+            self.twenty = diff//20
+            diff %= 20
+        if diff//10:
+            self.ten = diff//10
+            diff %= 10
+        if diff//5:
+            self.five = diff//5
+            diff %= 5
         if diff:
-            one = diff
-
-        self.five_hundred = five_hundred
-        self.one_hundred = one_hundred
-        self.fifty = fifty
-        self.twenty = twenty
-        self.ten = ten
-        self.five = five
-        self.one = one
+            self.one = diff
 
     def __lt__(self, other):
         if not isinstance(other, Money):
             raise TypeError(f'Type "Money" is expected, got {type(other)} instead!')
-        other: Money
-        if self.total < other.total:
-            return True
-        else:
-            return False
+        return self.total < other.total
 
     def __gt__(self, other):
         if not isinstance(other, Money):
             raise TypeError(f'Type "Money" is expected, got {type(other)} instead!')
-        other: Money
-        if self.total > other.total:
-            return True
-        else:
-            return False
+        return self.total > other.total
 
     def __eq__(self, other):
         if not isinstance(other, Money):
             raise TypeError(f'Type "Money" is expected, got {type(other)} instead!')
-        if self.total == other.total:
-            return True
-        else:
-            return False
+        return self.total == other.total
 
     def __str__(self):
         return f'Five_hundred: {self.five_hundred}, one_hundred: {self.one_hundred}, fifty: {self.fifty}, ' \

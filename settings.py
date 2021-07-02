@@ -3,13 +3,12 @@ MAX_PLAYERS_NUMBER = 6
 DICE_MIN = 1
 DICE_MAX = 6
 DICE_AMOUNT = 2
-FIELDS_NUMBER = 40
-START_FIELD = 0
-BOARD = [('GO',),
+
+BOARD = (('GO',),
          ('Property', 'Mediterranean Avenue', 'Purple', 60),
          ('Community Chest',),
          ('Property', 'Baltic Avenue', 'Purple', 60),
-         ('Tax', 'Income tax', 'None', 200),
+         ('Tax', 'Income tax', 200),
          ('Property', 'Reading Railroad', 'Railroad', 200),
          ('Property', 'Oriental Avenue', 'Light blue', 100),
          ('Chance',),
@@ -43,6 +42,6 @@ BOARD = [('GO',),
          ('Property', 'Short Line Railroad', 'Railroad', 200),
          ('Chance',),
          ('Property', 'Park Place', 'Blue', 350),
-         ('Tax', 'Luxury tax', 'None', 75),
+         ('Tax', 'Luxury tax', 75),
          ('Property', 'Boardwalk', 'Blue', 400),
-         ]
+         )

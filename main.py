@@ -54,27 +54,24 @@ def input_players_qty() -> int:
         print('Wrong q-ty!')
 
 
-def input_player_names(quantity: int, board) -> list[player.Player]:
+def create_players(quantity: int) -> list[player.Player]:
     """
     Ask players names and create objects of class Player for each of them.
     :param play_board:
     :param quantity: Quantity of players for particular game - integer.
     :return: List of players.
     """
-    return [player.Player(input('What is your name? '), board) for _ in range(quantity)]
+    return [player.Player(input('What is your name? ')) for _ in range(quantity)]
 
 
 if __name__ == '__main__':
     players_qty = input_players_qty()
-    playing_board = board.Board()
-    players = input_player_names(players_qty, playing_board)
+    players = create_players(players_qty)
     first_player = get_first_player(players)
-    players = sort_players(players,first_player)
+    players = sort_players(players, first_player)
     print('Players now have gold:')
     for player in players:
-        player.balance = bank.Bank.get_start_money()
         print(f'{player.name} has {player.balance}')
     order = 0
-    for i in playing_board.cells:
-        print(f'index - {i.index}, name - {i.name},'
-              f' color - {i.color}, value - {i.value}')
+    for field in board.fields:
+        print(f'index - {field.index}, name - {field.name}')
