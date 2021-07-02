@@ -5,9 +5,9 @@ import bank
 import board
 
 
-def get_first_player(players: list[player.Player]):
+def get_first_player(players: list[player.Player], throw_dice=utils.throw_dice):
     """
-    Throws dices and returns address of the Player object who has the biggest value, if tie - called again.
+    Throws dices and returns address Pytest fixturesof the Player object who has the biggest value, if tie - called again.
     :param players: List of players - list of objects.
     :return: Address of Player object.
     """
