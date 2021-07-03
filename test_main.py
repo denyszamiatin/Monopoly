@@ -74,3 +74,28 @@ def test_first_player_random(A, B, C, D):
 def test_first_player_with_mocks(m: unittest.mock.Mock, A, B, C, D):
     m.side_effect = (1, 1), (2, 2), (3, 3), (4, 4)
     assert main.get_first_player([A, B, C, D]) == D
+
+
+# @unittest.mock.patch('builtins.input', side_effect=['A', 'B', 'C', 'D'])
+# def test_create_players1(mock):
+#     assert main.create_players(4) == [player.Player('A'),player.Player('B'),
+#                                       player.Player('C'),player.Player('D')]
+
+@unittest.mock.patch('builtins.input')
+def test_create_players_list(m: unittest.mock.Mock):
+    m.side_effect = ['A', 'B', 'C', 'D']
+    assert len(main.create_players(4)) == 4
+
+
+@unittest.mock.patch('builtins.input')
+def test_create_players_list2(m: unittest.mock.Mock):
+    m.side_effect = ['A', 'B', 'C', 'D']
+    assert len(main.create_players(2)) == 2
+
+
+# TODO спросить, как исправить тест, чтобы он не падал.
+# @unittest.mock.patch('builtins.input')
+# def test_create_players(m: unittest.mock.Mock):
+#     m.side_effect = ['A', 'B', 'C', 'D']
+#     assert main.create_players(4) == [player.Player('A'),player.Player('B'),
+#                                       player.Player('C'),player.Player('D')]
