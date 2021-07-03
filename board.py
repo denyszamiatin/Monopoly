@@ -1,13 +1,13 @@
 import settings
 
 
-class BoardCell:
+class Field:
     def __init__(self, index, name):
         self.index = index
         self.name = name
 
 
-class PropertyBoardCell(BoardCell):
+class PropertyField(Field):
     def __init__(self, index, name, color=None, value=None):
         super().__init__(index, name)
         self.color = color
@@ -17,17 +17,17 @@ class PropertyBoardCell(BoardCell):
         pass
 
 
-class CommunityChestBoardCell(BoardCell):
+class CommunityChestField(Field):
     def functionality(self):
         pass
 
 
-class ChanceBoardCell(BoardCell):
+class ChanceField(Field):
     def functionality(self):
         pass
 
 
-class TaxBoardCell(BoardCell):
+class TaxField(Field):
     def __init__(self, index, name, tax):
         super().__init__(index, name)
         self.tax = tax
@@ -36,39 +36,39 @@ class TaxBoardCell(BoardCell):
         pass
 
 
-class GoBoardCell(BoardCell):
+class GoField(Field):
     def functionality(self):
         pass
 
 
-class JailBoardCell(BoardCell):
+class JailField(Field):
     def functionality(self):
         pass
 
 
-class GoToJailBoardCell(BoardCell):
+class GoToJailField(Field):
     def functionality(self):
         pass
 
 
-def get_cell(number, field):
+def get_field(number, field):
     field_type, *data = field
     if field_type == 'Property':
-        return PropertyBoardCell(number, *data)
+        return PropertyField(number, *data)
     elif field_type == 'GO':
-        return GoBoardCell(number, field_type)
+        return GoField(number, field_type)
     elif field_type == 'Community Chest':
-        return CommunityChestBoardCell(number, field_type)
+        return CommunityChestField(number, field_type)
     elif field_type == 'Tax':
-        return TaxBoardCell(number, *data)
+        return TaxField(number, *data)
     elif field_type == 'Chance':
-        return ChanceBoardCell(number, field_type)
+        return ChanceField(number, field_type)
     elif field_type == 'Jail':
-        return JailBoardCell(number, field_type)
+        return JailField(number, field_type)
     elif field_type == 'Go to jail':
-        return GoToJailBoardCell(number, field_type)
+        return GoToJailField(number, field_type)
     elif field_type == 'Free Parking':
-        return BoardCell(number, field_type)
+        return Field(number, field_type)
     else:
         raise AssertionError
 
@@ -81,4 +81,4 @@ def get_player_position(current, offset):
     return (current + offset) % len(fields)
 
 
-fields = [get_cell(i, field) for i, field in enumerate(settings.BOARD)]
+fields = [get_field(i, field) for i, field in enumerate(settings.BOARD)]
