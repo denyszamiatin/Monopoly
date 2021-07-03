@@ -99,3 +99,22 @@ def test_create_players_list2(m: unittest.mock.Mock):
 #     m.side_effect = ['A', 'B', 'C', 'D']
 #     assert main.create_players(4) == [player.Player('A'),player.Player('B'),
 #                                       player.Player('C'),player.Player('D')]
+
+@unittest.mock.patch('builtins.input')
+def test_input_players_qty_min(m: unittest.mock.Mock):
+    m.side_effect = '2'
+    assert main.input_players_qty() == 2
+
+
+@unittest.mock.patch('builtins.input')
+def test_input_players_qty_max(m: unittest.mock.Mock):
+    m.side_effect = '6'
+    assert main.input_players_qty() == 6
+
+
+@unittest.mock.patch('builtins.input')
+def test_input_players_qty_wrong_input(m: unittest.mock.Mock):
+    m.side_effect = '1', '7', 'qwerty', '4'
+    assert main.input_players_qty() == 4
+
+
