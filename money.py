@@ -1,6 +1,3 @@
-import math
-
-
 class Money:
     def __init__(self, five_hundred: int = 0,
                  one_hundred: int = 0,
@@ -41,27 +38,37 @@ class Money:
         if self.total < other.total:
             raise ValueError('Balance becomes negative!')
 
+        five_hundred, one_hundred, fifty, twenty, ten, five, one = 0,0,0,0,0,0,0
+
         diff = self.total - other.total
         if diff//500:
-            self.five_hundred = diff//500
+            five_hundred = diff//500
             diff %= 500
         if diff//100:
-            self.one_hundred = diff//100
+            one_hundred = diff//100
             diff %= 100
         if diff//50:
-            self.fifty = diff//50
+            fifty = diff//50
             diff %= 50
         if diff//20:
-            self.twenty = diff//20
+            twenty = diff//20
             diff %= 20
         if diff//10:
-            self.ten = diff//10
+            ten = diff//10
             diff %= 10
         if diff//5:
-            self.five = diff//5
+            five = diff//5
             diff %= 5
         if diff:
-            self.one = diff
+            one = diff
+
+        self.five_hundred = five_hundred
+        self.one_hundred = one_hundred
+        self.fifty = fifty
+        self.twenty = twenty
+        self.ten = ten
+        self.five = five
+        self.one = one
 
     def __lt__(self, other):
         if not isinstance(other, Money):
