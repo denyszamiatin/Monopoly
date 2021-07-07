@@ -71,7 +71,8 @@ if __name__ == '__main__':
     players = sort_players(players, first_player)
     print('Players now have gold:')
     for player in players:
-        print(f'{player.name} has {player.balance}')
+        print(player)
     order = 0
     for field in board.fields:
-        print(f'index - {field.index}, name - {field.name}')
+        print(field)
+

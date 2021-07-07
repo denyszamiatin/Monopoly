@@ -6,20 +6,39 @@ class Field:
         self.index = index
         self.name = name
 
+    def __str__(self):
+        return f'Field №{self.index}, name - {self.name}'
+
 
 class PropertyField(Field):
-    def __init__(self, index, name, color=None, value=None):
+    def __init__(self, index, name, color, value):
         super().__init__(index, name)
         self.color = color
         self.value = value
+
+    def __str__(self):
+        return f'Field №{self.index}, name - {self.name},' \
+               f' color - {self.color},' \
+               f' value - {self.value}'
 
     def functionality(self):
         pass
 
 
 class CommunityChestField(Field):
-    def functionality(self):
-        pass
+    __cards = settings.COMMUNITYCHESTCARDS
+
+    def shuffle_card(self):
+        """Take top card from deck and shuffle it to bottom."""
+        CommunityChestField.__cards = CommunityChestField.__cards[1:] + \
+                                      CommunityChestField.__cards[:0]
+
+    def get_card(self):
+        """Return top card from deck and shuffle it to bottom."""
+        card = CommunityChestField.__cards[0]
+        self.shuffle_card()
+        print(card)
+        return card
 
 
 class ChanceField(Field):
@@ -31,6 +50,10 @@ class TaxField(Field):
     def __init__(self, index, name, tax):
         super().__init__(index, name)
         self.tax = tax
+
+    def __str__(self):
+        return f'Field №{self.index}, name - {self.name},' \
+               f' tax - {self.tax}'
 
     def functionality(self):
         pass
