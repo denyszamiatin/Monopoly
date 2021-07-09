@@ -42,9 +42,19 @@ class CommunityChestField(Field):
 
 
 class ChanceField(Field):
-    def functionality(self):
-        pass
+    __cards = settings.CHANCECARDS
 
+    def shuffle_card(self):
+        """Take top card from deck and shuffle it to bottom."""
+        ChanceField.__cards = ChanceField.__cards[1:] + \
+                                      ChanceField.__cards[:0]
+
+    def get_card(self):
+        """Return top card from deck and shuffle it to bottom."""
+        card = ChanceField.__cards[0]
+        self.shuffle_card()
+        print(card)
+        return card
 
 class TaxField(Field):
     def __init__(self, index, name, tax):
