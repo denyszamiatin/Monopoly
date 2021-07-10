@@ -1,4 +1,3 @@
-import pytest
 import bank
 import money
 

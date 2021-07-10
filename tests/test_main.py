@@ -93,12 +93,12 @@ def test_create_players_list2(m: unittest.mock.Mock):
     assert len(main.create_players(2)) == 2
 
 
-# TODO спросить, как исправить тест, чтобы он не падал.
-# @unittest.mock.patch('builtins.input')
-# def test_create_players(m: unittest.mock.Mock):
-#     m.side_effect = ['A', 'B', 'C', 'D']
-#     assert main.create_players(4) == [player.Player('A'),player.Player('B'),
-#                                       player.Player('C'),player.Player('D')]
+@unittest.mock.patch('builtins.input')
+def test_create_players(m: unittest.mock.Mock):
+    m.side_effect = ['A', 'B', 'C', 'D']
+    players = main.create_players(4)
+    assert [player.name for player in players] == ['A', 'B', 'C', 'D']
+
 
 @unittest.mock.patch('builtins.input')
 def test_input_players_qty_min(m: unittest.mock.Mock):

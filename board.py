@@ -1,4 +1,21 @@
 import settings
+import random
+
+
+class Cards:
+    def __init__(self, cards):
+        self.cards = list(cards)
+        random.shuffle(self.cards)
+
+    def get_top_card(self):
+        """Return top card from deck and shuffle it to bottom."""
+        card = self.cards.pop(0)
+        self.cards.append(card)
+        return card
+
+
+community_chest_cards = Cards(settings.COMMUNITY_CHEST_CARDS)
+chance_cards = Cards(settings.CHANCE_CARDS)
 
 
 class Field:
@@ -25,36 +42,14 @@ class PropertyField(Field):
         pass
 
 
-class CommunityChestField(Field):
-    __cards = settings.COMMUNITYCHESTCARDS
+class CardField(Field):
+    def __init__(self, index, name, cards):
+        super().__init__(index, name)
+        self.cards = cards
 
-    def shuffle_card(self):
-        """Take top card from deck and shuffle it to bottom."""
-        CommunityChestField.__cards = CommunityChestField.__cards[1:] + \
-                                      CommunityChestField.__cards[:0]
+    def functionality(self):
+        print(self.cards.get_top_card())
 
-    def get_card(self):
-        """Return top card from deck and shuffle it to bottom."""
-        card = CommunityChestField.__cards[0]
-        self.shuffle_card()
-        print(card)
-        return card
-
-
-class ChanceField(Field):
-    __cards = settings.CHANCECARDS
-
-    def shuffle_card(self):
-        """Take top card from deck and shuffle it to bottom."""
-        ChanceField.__cards = ChanceField.__cards[1:] + \
-                                      ChanceField.__cards[:0]
-
-    def get_card(self):
-        """Return top card from deck and shuffle it to bottom."""
-        card = ChanceField.__cards[0]
-        self.shuffle_card()
-        print(card)
-        return card
 
 class TaxField(Field):
     def __init__(self, index, name, tax):
@@ -91,11 +86,11 @@ def get_field(number, field):
     elif field_type == 'GO':
         return GoField(number, field_type)
     elif field_type == 'Community Chest':
-        return CommunityChestField(number, field_type)
+        return CardField(number, field_type, community_chest_cards)
     elif field_type == 'Tax':
         return TaxField(number, *data)
     elif field_type == 'Chance':
-        return ChanceField(number, field_type)
+        return CardField(number, field_type, chance_cards)
     elif field_type == 'Jail':
         return JailField(number, field_type)
     elif field_type == 'Go to jail':
