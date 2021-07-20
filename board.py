@@ -1,5 +1,6 @@
 import settings
 import random
+import bank
 
 
 class Cards:
@@ -38,7 +39,7 @@ class PropertyField(Field):
                f' color - {self.color},' \
                f' value - {self.value}'
 
-    def functionality(self):
+    def functionality(self, player):
         pass
 
 
@@ -47,7 +48,7 @@ class CardField(Field):
         super().__init__(index, name)
         self.cards = cards
 
-    def functionality(self):
+    def functionality(self, player):
         print(self.cards.get_top_card())
 
 
@@ -60,22 +61,22 @@ class TaxField(Field):
         return f'Field №{self.index}, name - {self.name},' \
                f' tax - {self.tax}'
 
-    def functionality(self):
+    def functionality(self, player):
         pass
 
 
 class GoField(Field):
-    def functionality(self):
-        pass
+    def functionality(self, player):
+        player.balance + bank.get_lap_salary()
 
 
 class JailField(Field):
-    def functionality(self):
+    def functionality(self, player):
         pass
 
 
 class GoToJailField(Field):
-    def functionality(self):
+    def functionality(self, player):
         pass
 
 

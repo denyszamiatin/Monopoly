@@ -69,7 +69,6 @@ if __name__ == '__main__':
     players = create_players(players_qty)
     first_player = get_first_player(players)
     players = sort_players(players, first_player)
-    print('Players now have gold:')
     for player in players:
         print(player)
     order = 0
