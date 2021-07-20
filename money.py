@@ -18,7 +18,7 @@ class Money:
             else:
                 new_money[i] = self.banknotes[i]
         for i in other.banknotes:
-            if not i in self.banknotes.keys():
+            if i not in self.banknotes.keys():
                 new_money[i] = other.banknotes[i]
         return Money(new_money)
 

@@ -2,24 +2,24 @@ import money
 import pytest
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture()
 def money_01():
-    return money.Money(five_hundred=1, one_hundred=1, fifty=1, twenty=1, ten=1, one=1)
+    return money.Money({500: 1, 100: 1, 50: 1, 20: 1, 10: 1, 1: 1})
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture()
 def money_02():
-    return money.Money(five_hundred=0, one_hundred=1, fifty=0, twenty=1, ten=1, one=2)
+    return money.Money({100: 1, 20: 1, 10: 1, 1: 2})
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture()
 def money_03():
-    return money.Money(five_hundred=0, one_hundred=5, fifty=2, twenty=4, ten=0, one=1)
+    return money.Money({100: 5, 50: 2, 20: 4, 10: 0, 1: 1})
 
 
 def test_sub(money_01, money_02):
-    money_01 - money_02
-    assert money_01.total == 549
+    new_money = money_01 - money_02
+    assert new_money.total == 549
 
 
 def test_sub_exception(money_01, money_02):
@@ -28,8 +28,8 @@ def test_sub_exception(money_01, money_02):
 
 
 def test_add(money_01, money_02):
-    money_01 + money_02
-    assert money_01.total == 681
+    new_money = money_01 + money_02
+    assert new_money.total == 813
 
 
 def test_gt(money_01, money_02):

@@ -18,7 +18,8 @@ class Player:
         print(self)
 
     def __str__(self):
-        return f'player: {self.name}, with balance: {self.balance.total} on field: {self.field}'
+        return f'player: {self.name}, with balance: {self.balance.total}' \
+               f' on field: {self.field}'
 
     def __repr__(self):
         return f'Player({self.name})'
