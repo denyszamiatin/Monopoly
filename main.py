@@ -74,4 +74,7 @@ if __name__ == '__main__':
     order = 0
     for field in board.fields:
         print(field)
-
+    players[0].move(12)
+    players[0].move(12)
+    players[0].move(12)
+    players[0].move(12)

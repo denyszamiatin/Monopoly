@@ -67,7 +67,7 @@ class TaxField(Field):
 
 class GoField(Field):
     def functionality(self, player):
-        player.balance + bank.get_lap_salary()
+        player.balance = player.balance + bank.get_lap_salary()
 
 
 class JailField(Field):

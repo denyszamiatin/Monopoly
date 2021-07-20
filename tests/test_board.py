@@ -1,10 +1,17 @@
 import pytest
 import board
+import player
+import bank
 
 
 @pytest.fixture(scope='module')
 def dice():
     return 6
+
+
+@pytest.fixture()
+def A():
+    return player.Player('A')
 
 
 def test_get_field_property():
@@ -38,3 +45,8 @@ def test_get_player_position_39(dice):
 
 def test_get_start_field():
     assert board.get_start_field() == 0
+
+
+def test_GO_functionality(A):
+    new_balance = A.balance + bank.get_lap_salary()
+    assert new_balance.total == 1700
