@@ -1,6 +1,7 @@
 import settings
 import random
 import bank
+import money
 
 
 class Cards:
@@ -32,14 +33,27 @@ class PropertyField(Field):
     def __init__(self, index, name, color, value):
         super().__init__(index, name)
         self.color = color
-        self.value = value
+        self.value = money.Money(money.divide_in_banknotes(value))
+        self.owner = None
 
     def __str__(self):
         return f'Field №{self.index}, name - {self.name},' \
                f' color - {self.color},' \
-               f' value - {self.value}'
+               f' value - {self.value.total},' \
+               f' owner - {self.owner}'
 
     def functionality(self, player):
+        if self.owner is None:
+            if player.buy(self):
+                pass
+            else:
+                self.auction()
+        elif self.owner == player:
+            pass
+        else:
+            player.pay_rent(self.owner)
+
+    def auction(self):  # TODO Реализовать по другому Ишью.
         pass
 
 
@@ -55,11 +69,11 @@ class CardField(Field):
 class TaxField(Field):
     def __init__(self, index, name, tax):
         super().__init__(index, name)
-        self.tax = tax
+        self.tax = money.Money(money.divide_in_banknotes(tax))
 
     def __str__(self):
         return f'Field №{self.index}, name - {self.name},' \
-               f' tax - {self.tax}'
+               f' tax - {self.tax.total}'
 
     def functionality(self, player):
         pass

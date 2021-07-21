@@ -31,27 +31,7 @@ class Money:
             raise ValueError('Balance becomes negative!')
 
         diff = self.total - other.total
-        banknotes = {}
-        if diff//500:
-            banknotes[500] = diff//500
-            diff %= 500
-        if diff//100:
-            banknotes[100] = diff//100
-            diff %= 100
-        if diff//50:
-            banknotes[50] = diff//50
-            diff %= 50
-        if diff//20:
-            banknotes[20] = diff//20
-            diff %= 20
-        if diff//10:
-            banknotes[10] = diff//10
-            diff %= 10
-        if diff//5:
-            banknotes[5] = diff//5
-            diff %= 5
-        if diff:
-            banknotes[1] = diff
+        banknotes = divide_in_banknotes(diff)
         return Money(banknotes)
 
     def __lt__(self, other):
@@ -77,3 +57,28 @@ class Money:
 
     def __repr__(self):
         return f'{self.banknotes}, Total:  {self.total}'
+
+
+def divide_in_banknotes(total):
+    banknotes = {}
+    if total // 500:
+        banknotes[500] = total // 500
+        total %= 500
+    if total // 100:
+        banknotes[100] = total // 100
+        total %= 100
+    if total // 50:
+        banknotes[50] = total // 50
+        total %= 50
+    if total // 20:
+        banknotes[20] = total // 20
+        total %= 20
+    if total // 10:
+        banknotes[10] = total // 10
+        total %= 10
+    if total // 5:
+        banknotes[5] = total // 5
+        total %= 5
+    if total:
+        banknotes[1] = total
+    return banknotes

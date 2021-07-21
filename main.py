@@ -81,3 +81,5 @@ if __name__ == '__main__':
     order = 0
     for field in board.fields:
         print(field)
+    players[0].move(1)
+    print(board.fields[1])
