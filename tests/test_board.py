@@ -14,6 +14,11 @@ def A():
     return player.Player('A')
 
 
+@pytest.fixture()
+def GO():
+    return board.get_field(1, ('GO',))
+
+
 def test_get_field_property():
     field = board.get_field(1, ('Property', 'Mediterranean Avenue',
                                 'Purple', 60))
@@ -47,6 +52,6 @@ def test_get_start_field():
     assert board.get_start_field() == 0
 
 
-def test_GO_functionality(A):
-    new_balance = A.balance + bank.get_lap_salary()
-    assert new_balance.total == 1700
+def test_GO_functionality(A, GO):
+    GO.functionality(A)
+    assert A.balance.total == 1700
