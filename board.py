@@ -36,6 +36,7 @@ class PropertyField(Field):  # TODO Нужно реализовать Утили
         self.value = money.Money(money.divide_in_banknotes(value))
         self.rent_list = rent_list
         self.owner = None
+        self.mortgage = False
         self.buildings = []
 
     def monopoly(self):
@@ -86,7 +87,8 @@ class PropertyField(Field):  # TODO Нужно реализовать Утили
         elif self.owner == player:
             pass
         else:
-            player.pay_rent(self.owner, self)
+            if not self.mortgage:  # TODO реализовать залоги.
+                player.pay_rent(self.owner, self)
 
     def auction(self):  # TODO Реализовать по другому Ишью.
         pass
