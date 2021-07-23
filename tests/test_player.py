@@ -3,7 +3,7 @@ import unittest.mock
 import player
 import board
 import money
-
+import settings
 
 @pytest.fixture()
 def A():
@@ -18,8 +18,13 @@ def player_without_money():
 
 
 @pytest.fixture()
-def property_field():
-    return board.get_field(1, ('Property', 'Mediterranean Avenue', 'Purple', 60))
+def fields():
+    return [board.get_field(i, field) for i, field in enumerate(settings.BOARD)]
+
+
+@pytest.fixture()
+def property_field(fields):
+    return fields[1]
 
 
 @unittest.mock.patch('builtins.input')
@@ -38,7 +43,7 @@ def test_move(m: unittest.mock.Mock, A):
 
 
 @unittest.mock.patch('builtins.input')
-def test_move_lap_salary(m: unittest.mock.Mock, A):
+def test_move_lap_salary(m: unittest.mock.Mock, A, fields):
     m.side_effect = ['N', 'N', 'N']
     A.move(39)
     A.move(2)
@@ -76,13 +81,6 @@ def test_buy_4(player_without_money, property_field):
 
 
 @unittest.mock.patch('builtins.input')
-def test_buy_5(m: unittest.mock.Mock, A, property_field):
-    m.side_effect = 'Y'
-    A.buy(property_field)
-    assert property_field.owner == A
-
-
-@unittest.mock.patch('builtins.input')
 def test_buy_6(m: unittest.mock.Mock, A, property_field):
     m.side_effect = 'Y'
     A.buy(property_field)
@@ -100,4 +98,24 @@ def test_buy_7(m: unittest.mock.Mock, A, property_field):
 def test_buy_9(m: unittest.mock.Mock, A, property_field):
     m.side_effect = 'N'
     A.buy(property_field)
+    assert A.balance.total == 1500
+
+
+def test_pay_rent_1(A, player_without_money, property_field):
+    A.pay_rent(player_without_money, property_field)
+    assert A.balance.total == 1498
+
+
+def test_pay_rent_2(A, player_without_money, property_field):
+    A.pay_rent(player_without_money, property_field)
+    assert player_without_money.balance.total == 2
+
+
+def test_pay_rent_bankrupt(A, player_without_money, property_field):
+    player_without_money.pay_rent(A, property_field)
+    assert player_without_money.bankrupt
+
+
+def test_pay_rent_bankrupt_2(A, player_without_money, property_field):
+    player_without_money.pay_rent(A, property_field)
     assert A.balance.total == 1500

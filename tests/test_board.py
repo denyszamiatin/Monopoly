@@ -1,27 +1,47 @@
 import pytest
+import unittest.mock
 import board
 import player
-import bank
+import settings
+
+@pytest.fixture()
+def fields():
+    return [board.get_field(i, field) for i, field in enumerate(settings.BOARD)]
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture()
 def dice():
     return 6
 
 
 @pytest.fixture()
-def A():
-    return player.Player('A')
+def Q():
+    return player.Player('Q')
 
 
 @pytest.fixture()
-def GO():
-    return board.get_field(1, ('GO',))
+def W():
+    return player.Player('W')
+
+
+@pytest.fixture()
+def GO(fields):
+    return fields[0]
+
+
+@pytest.fixture()
+def mediterranean_avenue(fields):
+    return fields[1]
+
+
+@pytest.fixture()
+def baltic_avenue(fields):
+    return fields[3]
 
 
 def test_get_field_property():
     field = board.get_field(1, ('Property', 'Mediterranean Avenue',
-                                'Purple', 60))
+                                'Purple', 60, [2, 10, 30, 90, 160, 250]))
     assert isinstance(field, board.PropertyField)
 
 
@@ -52,6 +72,43 @@ def test_get_start_field():
     assert board.get_start_field() == 0
 
 
-def test_GO_functionality(A, GO):
-    GO.functionality(A)
-    assert A.balance.total == 1700
+def test_go_functionality(Q, GO):
+    GO.functionality(Q)
+    assert Q.balance.total == 1700
+
+
+@unittest.mock.patch('player.Player.buy')
+def test_property_field_functionality(m: unittest.mock.Mock, baltic_avenue, Q):
+    m.return_value = True
+    baltic_avenue.functionality(Q)
+    assert baltic_avenue.owner == Q
+
+
+def test_property_rent_1(baltic_avenue):
+    assert baltic_avenue.rent.total == 4
+
+
+def test_property_rent_2(fields, Q):
+    fields[5].owner = Q
+    assert fields[5].rent.total == 25
+
+
+@unittest.mock.patch('utils.throw_dice')
+def test_property_rent_3(m: unittest.mock.Mock, fields):
+    m.return_value = (2, 2)
+    assert fields[12].rent.total == 16
+
+
+@unittest.mock.patch('board.fields')
+def test_property_monopoly(m: unittest.mock.Mock, fields,
+                           baltic_avenue, mediterranean_avenue, Q):
+    m.return_value = fields
+    baltic_avenue.owner = Q
+    mediterranean_avenue.owner = Q
+    assert baltic_avenue.monopoly()
+
+
+@unittest.mock.patch('board.PropertyField.monopoly')
+def test_property_rent_monopoly(m: unittest.mock.Mock, baltic_avenue):
+    m.return_value = True
+    assert baltic_avenue.rent.total == 8

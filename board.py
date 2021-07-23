@@ -2,7 +2,7 @@ import settings
 import random
 import bank
 import money
-
+import utils
 
 class Cards:
     def __init__(self, cards):
@@ -50,12 +50,26 @@ class PropertyField(Field):  # TODO Нужно реализовать Утили
 
     @property
     def rent(self):
-        rent = money.Money(money.divide_in_banknotes(self.rent_list[0]))
-        if self.monopoly():
-            rent *= 2
-        if self.buildings:
-            pass  # TODO Реализовать дома и отели позже.
-        return rent
+        if self.color == 'Utility':
+            rent = self.rent_list[0] * sum(utils.throw_dice())
+            if self.monopoly():
+                rent = self.rent_list[1] * sum(utils.throw_dice())
+
+        elif self.color == 'Railroad':
+            rent = self.rent_list[0]
+            property_fields = [field for field in fields if isinstance(field, PropertyField)]
+            own_qty = [field for field in property_fields if
+                           field.color == 'Railroad' and field.owner == self.owner]
+            if len(own_qty) > 1:
+                rent = self.rent_list[len(own_qty)-1]
+
+        else:
+            rent = self.rent_list[0]
+            if self.monopoly():
+                rent *= 2
+            if self.buildings:
+                pass  # TODO Реализовать дома и отели позже.
+        return money.Money(money.divide_in_banknotes(rent))
 
     def __str__(self):
         return f'Field №{self.index}, name - {self.name},' \
