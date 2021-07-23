@@ -29,12 +29,33 @@ class Field:
         return f'Field №{self.index}, name - {self.name}'
 
 
-class PropertyField(Field):
-    def __init__(self, index, name, color, value):
+class PropertyField(Field):  # TODO Нужно реализовать Утилити и Ж/Д поля.
+    def __init__(self, index, name, color, value, rent_list):
         super().__init__(index, name)
         self.color = color
         self.value = money.Money(money.divide_in_banknotes(value))
+        self.rent_list = rent_list
         self.owner = None
+        self.buildings = []
+
+    def monopoly(self):
+        property_fields = [field for
+                           field in fields if isinstance(field, PropertyField)]
+        monopoly = set([field.owner for
+                        field in property_fields if self.color == field.color])
+        if (len(monopoly) == 1) and None not in monopoly:
+            return True
+        else:
+            return False
+
+    @property
+    def rent(self):
+        rent = money.Money(money.divide_in_banknotes(self.rent_list[0]))
+        if self.monopoly():
+            rent *= 2
+        if self.buildings:
+            pass  # TODO Реализовать дома и отели позже.
+        return rent
 
     def __str__(self):
         return f'Field №{self.index}, name - {self.name},' \
@@ -45,13 +66,13 @@ class PropertyField(Field):
     def functionality(self, player):
         if self.owner is None:
             if player.buy(self):
-                pass
+                self.owner = player
             else:
                 self.auction()
         elif self.owner == player:
             pass
         else:
-            player.pay_rent(self.owner)
+            player.pay_rent(self.owner, self)
 
     def auction(self):  # TODO Реализовать по другому Ишью.
         pass
@@ -81,7 +102,7 @@ class TaxField(Field):
 
 class GoField(Field):
     def functionality(self, player):
-        player.balance = player.balance + bank.get_lap_salary()
+        player.balance += bank.get_lap_salary()
 
 
 class JailField(Field):

@@ -7,6 +7,13 @@ class Money:
         return sum([int(banknote)*self.banknotes[banknote]
                     for banknote in self.banknotes])
 
+    def __mul__(self, other):
+        if not isinstance(other, int):
+            raise TypeError(f'Type "int" is expected,'
+                            f' got {type(other)} instead!')
+        result = self.total*2
+        return Money(divide_in_banknotes(result))
+
     def __add__(self, other):
         if not isinstance(other, Money):
             raise TypeError(f'Type "Money" is expected,'
