@@ -5,6 +5,7 @@ import board
 import money
 import settings
 
+
 @pytest.fixture()
 def A():
     return player.Player('A')
@@ -62,47 +63,47 @@ def test_move_lap_salary_double(m: unittest.mock.Mock, A):
 @unittest.mock.patch('builtins.input')
 def test_buy_1(m: unittest.mock.Mock, A, property_field):
     m.side_effect = 'Y'
-    assert A.buy(property_field)
+    assert A.buy(property_field.value)
 
 
 @unittest.mock.patch('builtins.input')
 def test_buy_2(m: unittest.mock.Mock, A, property_field):
     m.side_effect = 'N'
-    assert not A.buy(property_field)
+    assert not A.buy(property_field.value)
 
 
 def test_buy_3(player_without_money, property_field):
-    assert not player_without_money.buy(property_field)
+    assert not player_without_money.buy(property_field.value)
 
 
 def test_buy_4(player_without_money, property_field):
-    player_without_money.buy(property_field)
+    player_without_money.buy(property_field.value)
     assert property_field.owner is None
 
 
 @unittest.mock.patch('builtins.input')
 def test_buy_6(m: unittest.mock.Mock, A, property_field):
     m.side_effect = 'Y'
-    A.buy(property_field)
+    A.buy(property_field.value)
     assert A.balance.total == 1440
 
 
 @unittest.mock.patch('builtins.input')
 def test_buy_7(m: unittest.mock.Mock, A, property_field):
     m.side_effect = 'N'
-    A.buy(property_field)
+    A.buy(property_field.value)
     assert property_field.owner is None
 
 
 @unittest.mock.patch('builtins.input')
 def test_buy_9(m: unittest.mock.Mock, A, property_field):
     m.side_effect = 'N'
-    A.buy(property_field)
+    A.buy(property_field.value)
     assert A.balance.total == 1500
 
 
 def test_pay_rent_1(A, player_without_money, property_field):
-    A.pay_rent(player_without_money, property_field)
+    A.pay_rent(player_without_money, property_field.rent)
     assert A.balance.total == 1498
 
 

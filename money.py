@@ -4,35 +4,22 @@ class Money:
 
     @property
     def total(self):
-        return sum([int(banknote)*self.banknotes[banknote]
-                    for banknote in self.banknotes])
-
-    def __mul__(self, other):
-        if not isinstance(other, int):
-            raise TypeError(f'Type "int" is expected,'
-                            f' got {type(other)} instead!')
-        result = self.total*2
-        return Money(divide_in_banknotes(result))
+        return sum([banknote*number
+                    for banknote, number in self.banknotes.items()])
 
     def __add__(self, other):
-        if not isinstance(other, Money):
-            raise TypeError(f'Type "Money" is expected,'
-                            f' got {type(other)} instead!')
+        assert isinstance(other, Money), f'Type "Money" is expected,' \
+                            f' got {type(other)} instead!'
         new_money = {}
-        for i in self.banknotes:
-            if i in other.banknotes.keys():
-                new_money[i] = self.banknotes[i] + other.banknotes[i]
-            else:
-                new_money[i] = self.banknotes[i]
-        for i in other.banknotes:
-            if i not in self.banknotes.keys():
-                new_money[i] = other.banknotes[i]
+        for banknote in banknotes_values:
+            new_value = self.banknotes.get(banknote, 0) + other.banknotes.get(banknote, 0)
+            if new_value:
+                new_money[banknote] = new_value
         return Money(new_money)
 
     def __sub__(self, other):
-        if not isinstance(other, Money):
-            raise TypeError(f'Type "Money" is expected,'
-                            f' got {type(other)} instead!')
+        assert isinstance(other, Money), f'Type "Money" is expected,' \
+                            f' got {type(other)} instead!'
 
         if self.total < other.total:
             raise ValueError('Balance becomes negative!')
@@ -66,26 +53,12 @@ class Money:
         return f'{self.banknotes}, Total:  {self.total}'
 
 
+banknotes_values = 500, 100, 50, 20, 10, 5, 1
+
+
 def divide_in_banknotes(total):
     banknotes = {}
-    if total // 500:
-        banknotes[500] = total // 500
-        total %= 500
-    if total // 100:
-        banknotes[100] = total // 100
-        total %= 100
-    if total // 50:
-        banknotes[50] = total // 50
-        total %= 50
-    if total // 20:
-        banknotes[20] = total // 20
-        total %= 20
-    if total // 10:
-        banknotes[10] = total // 10
-        total %= 10
-    if total // 5:
-        banknotes[5] = total // 5
-        total %= 5
-    if total:
-        banknotes[1] = total
+    for value in banknotes_values:
+        if total // value:
+            banknotes[value], total = divmod(total, value)
     return banknotes

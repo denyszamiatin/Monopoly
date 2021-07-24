@@ -4,6 +4,7 @@ import bank
 import money
 import utils
 
+
 class Cards:
     def __init__(self, cards):
         self.cards = list(cards)
@@ -29,7 +30,7 @@ class Field:
         return f'Field №{self.index}, name - {self.name}'
 
 
-class PropertyField(Field):  # TODO Нужно реализовать Утилити и Ж/Д поля.
+class PropertyField(Field):
     def __init__(self, index, name, color, value, rent_list):
         super().__init__(index, name)
         self.color = color
@@ -39,30 +40,25 @@ class PropertyField(Field):  # TODO Нужно реализовать Утили
         self.mortgage = False
         self.buildings = []
 
-    def monopoly(self):
+    def get_owners(self):
         property_fields = [field for
                            field in fields if isinstance(field, PropertyField)]
-        monopoly = set([field.owner for
-                        field in property_fields if self.color == field.color])
-        if (len(monopoly) == 1) and None not in monopoly:
-            return True
-        else:
-            return False
+        return [field.owner for
+                        field in property_fields if self.color == field.color]
+
+    def monopoly(self):
+        owners = self.get_owners()
+        return len(set(owners)) == 1 and None not in owners
 
     @property
     def rent(self):
         if self.color == 'Utility':
-            rent = self.rent_list[0] * sum(utils.throw_dice())
-            if self.monopoly():
-                rent = self.rent_list[1] * sum(utils.throw_dice())
+            rent_coeff = self.rent_list[1] if self.monopoly() else self.rent_list[0]
+            return rent_coeff * sum(utils.throw_dice())
 
         elif self.color == 'Railroad':
-            rent = self.rent_list[0]
-            property_fields = [field for field in fields if isinstance(field, PropertyField)]
-            own_qty = [field for field in property_fields if
-                           field.color == 'Railroad' and field.owner == self.owner]
-            if len(own_qty) > 1:
-                rent = self.rent_list[len(own_qty)-1]
+            own_qty = sum(owner == self.owner for owner in self.get_owners())
+            return self.rent_list[own_qty - 1]
 
         else:
             rent = self.rent_list[0]
@@ -70,7 +66,7 @@ class PropertyField(Field):  # TODO Нужно реализовать Утили
                 rent *= 2
             if self.buildings:
                 pass  # TODO Реализовать дома и отели позже.
-        return money.Money(money.divide_in_banknotes(rent))
+            return rent
 
     def __str__(self):
         return f'Field №{self.index}, name - {self.name},' \
@@ -80,15 +76,13 @@ class PropertyField(Field):  # TODO Нужно реализовать Утили
 
     def functionality(self, player):
         if self.owner is None:
-            if player.buy(self):
+            if player.buy(self.value):
                 self.owner = player
             else:
                 self.auction()
-        elif self.owner == player:
-            pass
-        else:
+        elif self.owner != player:
             if not self.mortgage:  # TODO реализовать залоги.
-                player.pay_rent(self.owner, self)
+                player.pay_rent(self.owner, money.divide_in_banknotes(self.rent))
 
     def auction(self):  # TODO Реализовать по другому Ишью.
         pass

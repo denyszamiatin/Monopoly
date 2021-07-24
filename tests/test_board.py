@@ -4,6 +4,7 @@ import board
 import player
 import settings
 
+
 @pytest.fixture()
 def fields():
     return [board.get_field(i, field) for i, field in enumerate(settings.BOARD)]
@@ -85,30 +86,29 @@ def test_property_field_functionality(m: unittest.mock.Mock, baltic_avenue, Q):
 
 
 def test_property_rent_1(baltic_avenue):
-    assert baltic_avenue.rent.total == 4
+    assert baltic_avenue.rent == 4
 
 
 def test_property_rent_2(fields, Q):
+    board.fields = fields
     fields[5].owner = Q
-    assert fields[5].rent.total == 25
+    assert fields[5].rent == 25
 
 
 @unittest.mock.patch('utils.throw_dice')
 def test_property_rent_3(m: unittest.mock.Mock, fields):
     m.return_value = (2, 2)
-    assert fields[12].rent.total == 16
+    assert fields[12].rent == 16
 
 
-@unittest.mock.patch('board.fields')
-def test_property_monopoly(m: unittest.mock.Mock, fields,
-                           baltic_avenue, mediterranean_avenue, Q):
-    m.return_value = fields
-    baltic_avenue.owner = Q
-    mediterranean_avenue.owner = Q
-    assert baltic_avenue.monopoly()
+def test_property_monopoly(fields, Q):
+    board.fields = fields
+    fields[3].owner = Q
+    fields[1].owner = Q
+    assert fields[3].monopoly()
 
 
 @unittest.mock.patch('board.PropertyField.monopoly')
 def test_property_rent_monopoly(m: unittest.mock.Mock, baltic_avenue):
     m.return_value = True
-    assert baltic_avenue.rent.total == 8
+    assert baltic_avenue.rent == 8

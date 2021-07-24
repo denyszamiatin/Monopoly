@@ -18,28 +18,25 @@ class Player:
             board.fields[0].functionality(self)
         print(self)
 
-    def pay_rent(self, other, property_field):
-        if not isinstance(other, Player):
-            raise TypeError(f'Type "Player" is expected,'
-                            f' got {type(other)} instead!')
-        if self.balance < property_field.rent:  # TODO реализовать залог.
+    def pay_rent(self, owner, rent):
+        assert isinstance(owner, Player), f'Type "Player" is expected,' \
+                            f' got {type(owner)} instead!'
+        if self.balance < rent:  # TODO реализовать залог.
             self.bankrupt = True
         else:
-            self.balance -= property_field.rent
-            other.balance += property_field.rent
+            self.balance -= rent
+            owner.balance += rent
 
-    def buy(self, property_field):
-        if self.balance < property_field.value:
+    def buy(self, value):
+        if self.balance < value:
             return False
-        else:
-            while True:
-                choice = input('Do you want to buy? Y/N\n')
-                if choice == 'Y':
-                    self.balance -= property_field.value
-                    return True
-                elif choice == 'N':
-                    return False
-
+        while True:
+            choice = input('Do you want to buy? Y/N\n').upper().strip()
+            if choice == 'Y':
+                self.balance -= value
+                return True
+            elif choice == 'N':
+                return False
 
     def __str__(self):
         return f'player: {self.name}, with balance: {self.balance.total}' \
