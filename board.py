@@ -3,6 +3,7 @@ import random
 import bank
 import money
 import utils
+import players_list
 
 
 class Cards:
@@ -41,17 +42,21 @@ class PropertyField(Field):
         self.buildings = []
 
     def get_owners(self):
+        """Check who own all property of same color."""
         property_fields = [field for
                            field in fields if isinstance(field, PropertyField)]
         return [field.owner for
                         field in property_fields if self.color == field.color]
 
     def monopoly(self):
+        """Check if property is in monopoly."""
         owners = self.get_owners()
         return len(set(owners)) == 1 and None not in owners
 
     @property
     def rent(self):
+        """Return rent - sum of money to pay,
+         if you stand on a property and dont own it"""
         if self.color == 'Utility':
             rent_coeff = self.rent_list[1] if self.monopoly() else self.rent_list[0]
             return rent_coeff * sum(utils.throw_dice())
@@ -75,17 +80,22 @@ class PropertyField(Field):
                f' owner - {self.owner}'
 
     def functionality(self, player):
+        """
+        1) If property is not owned yet - let player buy it. If he refuses
+        auction starts.
+        2) If property is owned buy another player. Pay rent to an owner.
+        :param player:
+        :return:
+        """
         if self.owner is None:
             if player.buy(self.value):
                 self.owner = player
             else:
-                self.auction()
+                print(f'Auction is started! {self.name} is being sold.')
+                self.owner = players_list.auction()
         elif self.owner != player:
             if not self.mortgage:  # TODO реализовать залоги.
                 player.pay_rent(self.owner, money.divide_in_banknotes(self.rent))
-
-    def auction(self):  # TODO Реализовать по другому Ишью.
-        pass
 
 
 class CardField(Field):
